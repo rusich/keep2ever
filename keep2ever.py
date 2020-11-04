@@ -1,4 +1,4 @@
-""" keep4ever """
+""" keep2ever """
 import io
 import argparse
 import re
