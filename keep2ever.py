@@ -50,7 +50,7 @@ def evernote_datetime(timestamp):
     return dtfts.strftime("%Y%m%dT%H%M%SZ")
 
 
-def evernote_image_resources(json_note, zip_file):
+def evernote_resources(json_note, zip_file):
     """ Generates "<resource>" note section from file"""
     mime = magic.Magic(mime=True)
     resources = ""
@@ -105,18 +105,16 @@ def export_notes(impmort_file, export_to_file):
                     if 'textContent' in json_note:
                         content = html.escape(json_note['textContent'])
                         content = content.replace('\n', '<br/>\n')
-                        if 'listContent' in json_note:
-                            print("Also list")
-                    else:
+                    elif 'listContent' in json_note:
                         content = "<ul>"
                         for item in json_note['listContent']:
-                            content = content + f"<li>{html.escape(item['text'])}</li>"
-                        content = content + "</ul>"
+                            content += f"<li>{html.escape(item['text'])}</li>"
+                        content += "</ul>"
 
                     evernote_resource = ''
 
                     if 'attachments' in json_note:
-                        evernote_resource = evernote_image_resources(json_note, zip_file)
+                        evernote_resource = evernote_resources(json_note, zip_file)
 
                     template_values = {
                         'note_title': json_note['title'],
