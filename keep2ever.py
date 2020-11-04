@@ -4,6 +4,7 @@ import argparse
 import re
 import json
 import base64
+import html
 from datetime import datetime
 from zipfile import ZipFile
 import magic
@@ -47,6 +48,7 @@ def evernote_datetime(timestamp):
     """ Convert unix timestamp to Evernote datetime format """
     dtfts = datetime.fromtimestamp(timestamp / 1000000)
     return dtfts.strftime("%Y%m%dT%H%M%SZ")
+
 
 def evernote_image_resources(json_note, zip_file):
     """ Generates "<resource>" note section from file"""
@@ -101,14 +103,14 @@ def export_notes(impmort_file, export_to_file):
                     evernote_dt = evernote_datetime(
                         json_note['userEditedTimestampUsec'])
                     if 'textContent' in json_note:
-                        content = json_note['textContent']
+                        content = html.escape(json_note['textContent'])
                         content = content.replace('\n', '<br/>\n')
                         if 'listContent' in json_note:
                             print("Also list")
                     else:
                         content = "<ul>"
                         for item in json_note['listContent']:
-                            content = content + f"<li>{item['text']}</li>"
+                            content = content + f"<li>{html.escape(item['text'])}</li>"
                         content = content + "</ul>"
 
                     evernote_resource = ''
