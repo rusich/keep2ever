@@ -10,7 +10,7 @@ This tool converts Google Keep notes (from [Google Takeout](https://takeout.goog
 
 ## Install requirements
 ```bash
-$ pip3 install Pillow python_magic
+$ pip3 install -r requirements.txt
 ```
 
 ## Usage
